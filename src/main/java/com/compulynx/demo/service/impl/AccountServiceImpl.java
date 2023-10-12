@@ -57,4 +57,29 @@ public class AccountServiceImpl implements AccountService {
         
     }
 
+    //get account by customer id and update the balance
+    public ResponseMessage updateBalanceByCustomerId(String customerId, int amount) {
+        Account account = accountRepository.findByCustomerCustomerId(customerId);
+        if (account != null) {
+            account.setBalance(account.getBalance() + amount);
+            accountRepository.save(account);
+            return new ResponseMessage("Account updated successfully", 200);
+        }
+        return new ResponseMessage("Account not found", 404);
+    }
+
+    //reduce customer balance
+    public ResponseMessage reduceBalanceByCustomerId(String customerId, int amount) {
+        Account account = accountRepository.findByCustomerCustomerId(customerId);
+        if (account != null) {
+            if (amount > account.getBalance()) {
+                return new ResponseMessage("Insufficient balance", 400);
+            }
+            account.setBalance(account.getBalance() - amount);
+            accountRepository.save(account);
+            return new ResponseMessage("Account updated successfully", 200);
+        }
+        return new ResponseMessage("Account not found", 404);
+    }
+
 }

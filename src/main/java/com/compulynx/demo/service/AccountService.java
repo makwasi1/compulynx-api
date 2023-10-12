@@ -14,4 +14,7 @@ public interface AccountService {
 
    double getBalanceByCustomerId(String customerId);
 
+    ResponseMessage reduceBalanceByCustomerId(String customerId, int amount);
+    ResponseMessage updateBalanceByCustomerId(String customerId, int amount);
+
 }
