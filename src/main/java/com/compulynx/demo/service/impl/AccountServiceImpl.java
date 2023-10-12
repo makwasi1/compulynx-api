@@ -2,6 +2,7 @@ package com.compulynx.demo.service.impl;
 
 import java.util.List;
 
+import com.compulynx.demo.entities.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private TransactionServiceImpl transactionServiceImpl;
 
     public ResponseMessage createAccount(Account account) {
         try {
@@ -63,6 +67,14 @@ public class AccountServiceImpl implements AccountService {
         if (account != null) {
             account.setBalance(account.getBalance() + amount);
             accountRepository.save(account);
+            //create a transaction for each deposit or withdrawal
+            Transaction transaction = new Transaction();
+            transaction.setAccount(account);
+            transaction.setAmount(amount);
+            transaction.setCustomerId(customerId);
+            transaction.setTransactionType("deposit");
+            transactionServiceImpl.createTransaction(transaction);
+
             return new ResponseMessage("Account updated successfully", 200);
         }
         return new ResponseMessage("Account not found", 404);
@@ -77,6 +89,13 @@ public class AccountServiceImpl implements AccountService {
             }
             account.setBalance(account.getBalance() - amount);
             accountRepository.save(account);
+            //create a transaction for each withdrawal
+            Transaction transaction = new Transaction();
+            transaction.setAccount(account);
+            transaction.setAmount(amount);
+            transaction.setCustomerId(customerId);
+            transaction.setTransactionType("deposit");
+            transactionServiceImpl.createTransaction(transaction);
             return new ResponseMessage("Account updated successfully", 200);
         }
         return new ResponseMessage("Account not found", 404);
