@@ -1,9 +1,13 @@
 package com.compulynx.demo.service.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.compulynx.demo.dao.response.ResponseMessage;
@@ -18,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
-    
+
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -42,13 +46,35 @@ public class CustomerServiceImpl implements CustomerService {
             accountService.createAccount(account);
             // Return success response
             return new ResponseMessage("User and Account created successfully", 200);
-                } catch (Exception e) {
+        } catch (Exception e) {
             log.error("Exception: {}", e);
             // Return error response
             return new ResponseMessage("Failed to create User and Account", 500);
-                }
         }
-       
+    }
+
+    // get all customers from the database
+    // get all customers from the database
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+
+    // get customer by customer id
+    public Customer getCustomer(String customerID, String pin) {
+        return customerRepository.findByCustomerIdAndPin(customerID, pin);
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) {
+                return (UserDetails) customerRepository.findByCustomerId(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            }
+        };
+    }
+
     private String generateRandomNumber() {
         Random random = new Random();
         StringBuilder accountNumber = new StringBuilder();

@@ -1,5 +1,7 @@
 package com.compulynx.demo.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +40,21 @@ public class AccountServiceImpl implements AccountService {
             return new ResponseMessage("Failed to update Account", 500);
         }
     }
-    
+
+    // get all account
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
+    }
+
+
+    //get customer balance
+    public double getBalanceByCustomerId(String customerId) {
+        Account account = accountRepository.findByCustomerCustomerId(customerId);
+        if (account != null) {
+            return account.getBalance();
+        }
+        return 0;
+        
+    }
+
 }
