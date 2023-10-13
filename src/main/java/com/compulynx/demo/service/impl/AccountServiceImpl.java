@@ -94,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
             transaction.setAccount(account);
             transaction.setAmount(amount);
             transaction.setCustomerId(customerId);
-            transaction.setTransactionType("deposit");
+            transaction.setTransactionType("withdrawal");
             transactionServiceImpl.createTransaction(transaction);
             return new ResponseMessage("Account updated successfully", 200);
         }
