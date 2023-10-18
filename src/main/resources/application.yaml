@@ -15,17 +15,19 @@ spring:
         format_sql: true
   datasource:
     # URL connection to database (spring-security is database name)
-    url: jdbc:h2:mem:spring-security
+    url: jdbc:h2:mem:spring
     # H2 sql Driver
     driver-class-name: org.h2.Driver
     username: root
     password: 12345
   h2:
     console:
-      enabled: true
+      enabled: false
 token:
   signing:
     key: 413F4428472B4B6250655368566D5970337336763979244226452948404D6351
 #server port
 server:
   port: 8080
+
+logback.access.enabled: true

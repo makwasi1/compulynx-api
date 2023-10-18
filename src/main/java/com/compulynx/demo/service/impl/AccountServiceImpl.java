@@ -2,20 +2,23 @@ package com.compulynx.demo.service.impl;
 
 import java.util.List;
 
-import com.compulynx.demo.entities.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.compulynx.demo.controller.AccountController;
 import com.compulynx.demo.dao.response.ResponseMessage;
 import com.compulynx.demo.entities.Account;
+import com.compulynx.demo.entities.Transaction;
 import com.compulynx.demo.repository.AccountRepository;
 import com.compulynx.demo.service.AccountService;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class AccountServiceImpl implements AccountService {
+
+    private static final Logger log = LoggerFactory.getLogger(AccountController.class);
+
 
     @Autowired
     private AccountRepository accountRepository;
@@ -27,6 +30,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             // Create the account record
             accountRepository.save(account);
+            log.info("Account created successfully");
             return new ResponseMessage("Account created successfully", 200);
         } catch (Exception e) {
             log.error("Exception: {}", e);

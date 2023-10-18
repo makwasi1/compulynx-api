@@ -1,0 +1,41 @@
+<configuration>
+    <property name="LOGS" value="./logs" />
+
+    <appender name="RESPONSE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/response.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/response-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>100</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <appender name="REQUEST_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/request.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/request-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>100</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+
+<logger name="com.compulynx.demo.controller" level="DEBUG">
+        <appender-ref ref="REQUEST_FILE" />
+    </logger>
+
+    <logger name="com.compulynx.demo.service.impl" level="DEBUG">
+        <appender-ref ref="RESPONSE_FILE" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="RESPONSE_FILE" />
+        <appender-ref ref="REQUEST_FILE" />
+         <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
